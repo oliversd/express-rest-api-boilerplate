@@ -28,4 +28,4 @@ TODO: Write credits
 
 ## License
 
-TODO: Write license
+This project is licensed under the [MIT License](https://github.com/oliversd/express-rest-api-boilerplate/blob/master/LICENSE)
