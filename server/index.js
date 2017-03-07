@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 
 // Load Enviroment variables from .env file
 // this .env file must be in the root folder
+// just for development
 config();
 
 // Set debug namespace for our app
