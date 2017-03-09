@@ -6,12 +6,12 @@ const app = express();
 app.use('/api', routes);
 
 app.use((req, res, next) => {
-  res.status(404).json({ error: "Sorry can't find that!" });
+  res.status(404).json({ status: 'error', error: 'Sorry endpoint not found!' });
   next();
 });
 
 app.use((err, req, res, next) => {
-  res.status(500).json({ status: 500, error: err.message });
+  res.status(500).json({ status: 'error', error: err.message });
   next(err);
 });
 
