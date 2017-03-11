@@ -39,6 +39,7 @@
     "cors": "^2.8.1",
     "debug": "^2.6.1",
     "express": "^4.15.2",
+    "helmet": "^3.5.0",
     "method-override": "^2.3.7",
     "mongoose": "^4.8.6",
     "morgan": "^1.8.1"
