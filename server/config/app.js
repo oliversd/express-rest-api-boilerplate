@@ -4,7 +4,7 @@ import methodOverride from 'method-override';
 import cors from 'cors';
 import helmet from 'helmet';
 
-import routes from '../routes/health';
+import routes from '../routes/routes';
 
 const app = express();
 

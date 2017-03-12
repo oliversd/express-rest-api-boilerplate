@@ -36,7 +36,11 @@ const options = {
   }
 };
 
-const mongodbUri = process.env.MONGO_URI;
+let mongodbUri = process.env.MONGO_URI;
+
+if (process.env.NODE_ENV === 'test') {
+  mongodbUri = process.env.MONGO_URI_DEV;
+}
 
 debugDb('Starting mongodb connection');
 
