@@ -7,4 +7,8 @@ const list = (req, res) => {
     .catch(error => error);
 };
 
-export default { list };
+const create = (req, res) => {
+  return 'test';
+};
+
+export default { list, create };
