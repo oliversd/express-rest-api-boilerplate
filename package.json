@@ -1,6 +1,6 @@
 {
   "name": "api-boilerplate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A boilerplate for Node, Express, ES6/7 API",
   "main": "index.js",
   "scripts": {
