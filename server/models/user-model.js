@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 import { debugDb } from '../config/debug';
+
+mongoose.Promise = global.Promise;
 
 /**
  * User Mongoose Schema
@@ -8,26 +11,30 @@ import { debugDb } from '../config/debug';
  * @type {Mongoose Schema}
  */
 const userSchema = new mongoose.Schema({
-  emails: {
-    address: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true
-    },
-    verified: {
-      type: Boolean,
-      default: false
-    },
-    default: Boolean
-  },
+  emails: [
+    {
+      address: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true
+      },
+      verified: {
+        type: Boolean,
+        default: false
+      },
+      default: Boolean
+    }
+  ],
+  password: String,
   profile: {
     firstName: String,
     lastName: String
   },
   services: {
-    type: [Object]
+    type: Array,
+    default: []
   },
   lastLogin: Date
 },
@@ -35,6 +42,23 @@ const userSchema = new mongoose.Schema({
     timestamps: true
   }
 );
+
+// Pre save function
+userSchema.pre('save', function (next) { // eslint-disable-line func-names
+  User.find({ 'emails.address': this.emails[0].address }).exec().then((user) => { // eslint-disable-line no-use-before-define
+    if (user.length > 0) {
+      // Here we don't return user already exist for security reasons
+      next(new Error('Could not complete the request'));
+    } else {
+      bcrypt.hash(this.password, 10).then((hash) => {
+        this.password = hash;
+        return next();
+      }).catch((err) => {
+        throw new Error('Error with password hash', err);
+      });
+    }
+  });
+});
 
 /**
  * Statics
@@ -46,7 +70,7 @@ userSchema.statics = {
    * @returns {Promise<User, APIError>}
    */
   findByEmail(email) {
-    return this.findOne({ 'emails.$.address': email })
+    return this.findOne({ 'emails.address': email })
       .exec()
       .then((user) => {
         debugDb(user);
@@ -62,7 +86,8 @@ userSchema.statics = {
    * @returns {Promise<User[]>}
    */
   list({ skip = 0, limit = 50 } = {}) {
-    return this.find()
+    return this.find({})
+      .select({ password: 0 }) // always filter the password field
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -70,6 +95,7 @@ userSchema.statics = {
   }
 };
 
+// Define User
 const User = mongoose.model('User', userSchema, 'users');
 
 export default User;

@@ -24,6 +24,7 @@ app.use(cors());
 app.use('/api', routes);
 
 app.use((req, res, next) => {
+  debugApp('Route not found');
   res.status(404).json({ status: 'error', error: 'Sorry endpoint not found!' });
   next();
 });
