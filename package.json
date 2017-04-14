@@ -1,11 +1,11 @@
 {
   "name": "api-boilerplate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A boilerplate for Node, Express, ES6/7 API",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG='*, -nodemon, -nodemon:*, -babel'  nodemon server/index.js --exec babel-node",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "DEBUG='app, mongoDb'  nodemon server/index.js --exec babel-node",
+    "test": "./node_modules/.bin/mocha --ui bdd --reporter spec --colors --compilers js:babel-core/register server/tests --recursive --require babel-polyfill",
     "clean": "rm -rf dist",
     "build": "npm run lint && npm run clean && mkdir dist && babel server -s -d dist && npm run serve",
     "serve": "DEBUG=* node dist/index.js",
@@ -24,14 +24,30 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.23.0",
+    "babel-eslint": "^7.1.1",
+    "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.2.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "dotenv": "^4.0.0",
     "eslint": "^3.17.0",
     "eslint-config-airbnb-base": "11.1.1",
     "eslint-plugin-import": "2.2.0",
     "eslint-watch": "^3.0.1",
+    "mocha": "^3.2.0",
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "debug": "^2.6.1"
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.1",
+    "debug": "^2.6.1",
+    "express": "^4.15.2",
+    "express-validator": "^3.1.2",
+    "helmet": "^3.5.0",
+    "method-override": "^2.3.7",
+    "mongoose": "^4.8.6",
+    "morgan": "^1.8.1"
   }
 }
