@@ -36,13 +36,17 @@ const options = {
   }
 };
 
-let mongodbUri = process.env.MONGO_URI;
+let mongodbUri = process.env.MONGO_URI || 'mongodb://localhost/development';
 
 if (process.env.NODE_ENV === 'test') {
-  mongodbUri = process.env.MONGO_URI_DEV;
+  mongodbUri = process.env.MONGO_URI_TEST || 'mongodb://localhost/test';
+  debugDb(`Starting mongodb connection on testing environment to ${mongodbUri}`);
+} else if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  mongodbUri = process.env.MONGO_URI_DEV || 'mongodb://localhost/development';
+  debugDb(`Starting mongodb connection on development environment to ${mongodbUri}`);
+} else {
+  debugDb('Starting mongodb connection on production environment');
 }
-
-debugDb('Starting mongodb connection');
 
 mongoose.connect(mongodbUri, options).then(
   () => {

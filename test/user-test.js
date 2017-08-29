@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import mongoose from 'mongoose';
 import chaiHttp from 'chai-http';
 
-import app from '../config/app';
+import app from '../src/config/app';
 // import User from '../models/user-model';
 
 mongoose.Promise = global.Promise; // set native Promise lib
