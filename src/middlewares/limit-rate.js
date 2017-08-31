@@ -17,7 +17,7 @@ const handleStoreError = (error) => {
   throw error;
 };
 
-// Start slowing requests after 5 failed attempts to do something for the same user
+// Start slowing requests after 10 failed attempts to do something for the same user
 const singleBruteforce = new ExpressBrute(store, {
   freeRetries: 10,
   minWait: 5 * 60 * 1000, // 5 minutes
@@ -25,24 +25,24 @@ const singleBruteforce = new ExpressBrute(store, {
   failCallback: ExpressBrute.FailForbidden,
   handleStoreError
 });
-// No more than 1000 login attempts per day per IP
+
+// No more than 10 requests per minute per IP, after that wait an hour
 const globalBruteforce = new ExpressBrute(store, {
-  freeRetries: 1000,
+  freeRetries: 10,
   attachResetToRequest: false,
   refreshTimeoutOnRequest: false,
-  minWait: 25 * 60 * 60 * 1000, // 1 day 1 hour (should never reach this wait time)
-  maxWait: 25 * 60 * 60 * 1000, // 1 day 1 hour (should never reach this wait time)
-  lifetime: 24 * 60 * 60, // 1 day (seconds not milliseconds)
+  minWait: 60 * 60 * 1000, // 1 hour
+  maxWait: 60 * 60 * 1000, // 1 hour (should never reach this wait time)
+  lifetime: 60, // 1 minute (seconds not milliseconds)
   failCallback: ExpressBrute.FailTooManyRequests,
   handleStoreError
 });
 
-
 export default {
-  prevent: globalBruteforce.prevent,
-  middleware: singleBruteforce.getMiddleware({
+  globalRateLimit: globalBruteforce.prevent,
+  singleRateLimit: param => singleBruteforce.getMiddleware({
     key: (req, res, next) => {
-      next(req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+      next(param);
     }
   })
 };

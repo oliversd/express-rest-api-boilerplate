@@ -8,6 +8,7 @@ import expressValidator from 'express-validator';
 import { debugApp } from '../config/debug';
 
 import routes from '../routes/routes';
+import { globalRateLimit } from '../middlewares/limit-rate';
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(expressValidator());
 app.use(helmet()); // for a little security. https://github.com/helmetjs/helmet
 app.use(cors());
 
-app.use('/api', routes);
+app.use('/api', globalRateLimit, routes);
 
 app.use((req, res, next) => {
   debugApp('Route not found');
