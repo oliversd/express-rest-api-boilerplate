@@ -4,7 +4,7 @@
   "description": "A boilerplate for Node, Express, ES6/7 API",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG='app, mongoDb'  nodemon src/index.js --exec babel-node",
+    "start": "DEBUG='app, mongo, redis, route' nodemon src/index.js --exec babel-node",
     "test": "./node_modules/.bin/mocha --ui bdd --reporter spec --colors --compilers js:babel-core/register test --recursive --require babel-polyfill",
     "clean": "rm -rf dist",
     "build": "npm run lint && npm run clean && mkdir dist && cp package.json dist/. && cp yarn.lock dist/. && babel src -s -d dist",
@@ -52,9 +52,13 @@
     "express": "^4.15.2",
     "express-brute": "^1.0.1",
     "express-brute-redis": "^0.0.1",
+    "express-pino-logger": "^2.0.0",
     "express-validator": "^3.1.2",
     "helmet": "^3.5.0",
     "method-override": "^2.3.7",
-    "mongoose": "^4.8.6"
+    "mongoose": "^4.8.6",
+    "pino": "^4.7.1",
+    "pino-debug": "^1.0.5",
+    "redis": "^2.8.0"
   }
 }

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import { debugDb } from '../config/debug';
+import { debugMongo } from '../config/debug';
 
 mongoose.Promise = global.Promise;
 
@@ -73,7 +73,7 @@ userSchema.statics = {
     return this.findOne({ 'emails.address': email })
       .exec()
       .then((user) => {
-        debugDb(user);
+        debugMongo(user);
         return user;
       })
       .catch(err => err);

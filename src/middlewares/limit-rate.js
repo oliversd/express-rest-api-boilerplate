@@ -1,13 +1,12 @@
 import ExpressBrute from 'express-brute';
 import RedisStore from 'express-brute-redis';
+import redis from '../helpers/redis';
 
 let store = null;
 
 if (process.env.NODE_ENV === 'production') {
   store = new RedisStore({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT
-    // client: pre-connected redis client
+    client: redis
   });
 } else {
   store = new ExpressBrute.MemoryStore();

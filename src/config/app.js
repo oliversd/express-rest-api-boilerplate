@@ -9,6 +9,7 @@ import { debugApp } from '../config/debug';
 
 import routes from '../routes/routes';
 import { globalRateLimit } from '../middlewares/limit-rate';
+import debugRoute from '../middlewares/debug-route';
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.use(expressValidator());
 app.use(helmet()); // for a little security. https://github.com/helmetjs/helmet
 app.use(cors());
 
-app.use('/api', globalRateLimit, routes);
+app.use('/api', globalRateLimit, debugRoute, routes);
 
 app.use((req, res, next) => {
   debugApp('Route not found');
