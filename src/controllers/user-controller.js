@@ -15,7 +15,7 @@ const create = (req, res) => {
     'emails.0.default': true,
     password: req.body.password,
     services: [
-        { type: 'password', email: req.body.email }
+      { type: 'password', email: req.body.email }
     ],
     profile: {
       firstName: req.body.firstName || '',

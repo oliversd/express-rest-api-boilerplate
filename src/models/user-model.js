@@ -11,22 +11,20 @@ mongoose.Promise = global.Promise;
  * @type {Mongoose Schema}
  */
 const userSchema = new mongoose.Schema({
-  emails: [
-    {
-      address: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true
-      },
-      verified: {
-        type: Boolean,
-        default: false
-      },
-      default: Boolean
-    }
-  ],
+  emails: [{
+    address: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true
+    },
+    verified: {
+      type: Boolean,
+      default: false
+    },
+    default: Boolean
+  }],
   password: String,
   profile: {
     firstName: String,

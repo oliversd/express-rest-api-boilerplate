@@ -3,14 +3,10 @@ import userRoutes from './user-routes';
 
 const router = express.Router();
 
-router.get('/health-check', (req, res, next) => {
-  try {
-    res.json({
-      status: 'ok'
-    });
-  } catch (err) {
-    next(err);
-  }
+router.get('/health-check', (req, res) => {
+  res.json({
+    status: 'ok'
+  });
 });
 
 router.use('/user', userRoutes);

@@ -5,7 +5,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import expressValidator from 'express-validator';
 
-import { debugApp } from '../config/debug';
+import { debugApp } from './debug';
+import logger from '../helpers/logger';
 
 import routes from '../routes/routes';
 import { globalRateLimit } from '../middlewares/limit-rate';
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  logger.error(err);
   res.status(500).json({ status: 'error', error: err });
   next(err);
 });

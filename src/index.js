@@ -3,6 +3,15 @@ import mongoose from 'mongoose';
 
 import app from './config/app';
 import { debugApp, debugMongo } from './config/debug';
+import logger from './helpers/logger';
+
+try {
+  logger.info('Arranquemos esta weaa');
+  throw new Error('chucha la wea la cago');
+} catch (err) {
+  logger.error(err);
+}
+
 
 // Load Enviroment variables from .env file
 // this .env file must be in the root folder
@@ -60,7 +69,7 @@ const apiPort = process.env.API_PORT || 3000;
 
 conn.once('open', () => {
   // Wait for the database connection to establish, then start the app.
-  debugApp('Starting Express Boilerplate...');
+  debugApp('Starting Express Server...');
 
   app.listen(apiPort, () => {
     debugApp(`Server running at http://127.0.0.1:${apiPort}/`);
