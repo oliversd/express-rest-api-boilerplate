@@ -1163,12 +1163,6 @@ dashify@^0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/dashify/-/dashify-0.2.2.tgz#6a07415a01c91faf4a32e38d9dfba71f61cb20fe"
 
-debug@2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.0.tgz#bc596bcabe7617f11d9fa15361eded5608b8499b"
-  dependencies:
-    ms "0.7.2"
-
 debug@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.7.tgz#92bad1f6d05bbb6bba22cca88bcd0ec894c2861e"
@@ -1563,12 +1557,6 @@ express-brute@~0.4.2:
   dependencies:
     memcached "~0.2.4"
     underscore "~1.5.1"
-
-express-pino-logger@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/express-pino-logger/-/express-pino-logger-2.0.0.tgz#e2b1046a8e9a9fe65d4e7fcbe57115e28df076a1"
-  dependencies:
-    pino-http "^2.0.0"
 
 express-validator@^3.1.2:
   version "3.2.1"
@@ -2600,10 +2588,6 @@ mquery@2.3.1:
     regexp-clone "0.0.1"
     sliced "0.0.5"
 
-ms@0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
-
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -2834,20 +2818,7 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
-pino-debug@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/pino-debug/-/pino-debug-1.0.5.tgz#943cd314ffa579746328093413f0e56bc37fac78"
-  dependencies:
-    debug "2.6.0"
-    pino "^4.0.2"
-
-pino-http@^2.0.0:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/pino-http/-/pino-http-2.6.2.tgz#aedb71b08d15bc69d959870bafa6b7780103274f"
-  dependencies:
-    pino "^4.0.2"
-
-pino@^4.0.2, pino@^4.7.1:
+pino@^4.7.1:
   version "4.7.1"
   resolved "https://registry.yarnpkg.com/pino/-/pino-4.7.1.tgz#d8208de925065f49c9d4a72f54509a167fe18018"
   dependencies:
