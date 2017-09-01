@@ -56,6 +56,11 @@
     "helmet": "^3.5.0",
     "method-override": "^2.3.7",
     "mongoose": "^4.8.6",
+    "oauth2orize": "^1.10.0",
+    "passport": "^0.4.0",
+    "passport-http": "^0.3.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-oauth2-client-password": "^0.1.2",
     "pino": "^4.7.1",
     "redis": "^2.8.0"
   }

@@ -4,6 +4,7 @@ import methodOverride from 'method-override';
 import cors from 'cors';
 import helmet from 'helmet';
 import expressValidator from 'express-validator';
+import passport from 'passport';
 
 import { debugApp } from './debug';
 import logger from '../helpers/logger';
@@ -23,6 +24,8 @@ app.use(expressValidator());
 
 app.use(helmet()); // for a little security. https://github.com/helmetjs/helmet
 app.use(cors());
+
+app.use(passport.initialize());
 
 app.use('/api', globalRateLimit, debugRoute, routes);
 
