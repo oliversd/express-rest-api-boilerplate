@@ -4,12 +4,13 @@
   "description": "A boilerplate for Node, Express, ES6/7 API",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG='app, mongoDb'  nodemon src/index.js --exec babel-node",
+    "start": "DEBUG='app, mongo, redis, route' nodemon src/index.js --exec babel-node",
     "test": "./node_modules/.bin/mocha --ui bdd --reporter spec --colors --compilers js:babel-core/register test --recursive --require babel-polyfill",
     "clean": "rm -rf dist",
     "build": "npm run lint && npm run clean && mkdir dist && cp package.json dist/. && cp yarn.lock dist/. && babel src -s -d dist",
     "serve": "npm run build && DEBUG=* node dist/index.js",
-    "lint": "eslint src/**/*.js && eslint test/**/*.js && echo '> lint passed!!!'"
+    "lint": "eslint src/**/*.js && eslint test/**/*.js && echo '> lint passed!!!'",
+    "lint:watch": "esw -f simple-detail -w src/**/*.js test/**/*.js"
   },
   "keywords": [
     "api",
@@ -49,10 +50,13 @@
     "cors": "^2.8.1",
     "debug": "^2.6.1",
     "express": "^4.15.2",
+    "express-brute": "^1.0.1",
+    "express-brute-redis": "^0.0.1",
     "express-validator": "^3.1.2",
     "helmet": "^3.5.0",
     "method-override": "^2.3.7",
     "mongoose": "^4.8.6",
-    "morgan": "^1.8.1"
+    "pino": "^4.7.1",
+    "redis": "^2.8.0"
   }
 }

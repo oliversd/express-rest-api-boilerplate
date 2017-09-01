@@ -5,9 +5,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import expressValidator from 'express-validator';
 
-import { debugApp } from '../config/debug';
+import { debugApp } from './debug';
+import logger from '../helpers/logger';
 
 import routes from '../routes/routes';
+import { globalRateLimit } from '../middlewares/limit-rate';
+import debugRoute from '../middlewares/debug-route';
 
 const app = express();
 
@@ -21,7 +24,7 @@ app.use(expressValidator());
 app.use(helmet()); // for a little security. https://github.com/helmetjs/helmet
 app.use(cors());
 
-app.use('/api', routes);
+app.use('/api', globalRateLimit, debugRoute, routes);
 
 app.use((req, res, next) => {
   debugApp('Route not found');
@@ -30,6 +33,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  logger.error(err);
   res.status(500).json({ status: 'error', error: err });
   next(err);
 });
