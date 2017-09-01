@@ -2,13 +2,12 @@ import { config } from 'dotenv';
 import mongoose from 'mongoose';
 
 import app from './config/app';
-import { debugApp, debugDb } from './config/debug';
+import { debugApp, debugMongo } from './config/debug';
 
 // Load Enviroment variables from .env file
 // this .env file must be in the root folder
 // just for development
 config();
-
 
 mongoose.Promise = global.Promise; // set native Promise lib
 /*
@@ -40,22 +39,19 @@ let mongodbUri = process.env.MONGO_URI || 'mongodb://localhost/development';
 
 if (process.env.NODE_ENV === 'test') {
   mongodbUri = process.env.MONGO_URI_TEST || 'mongodb://localhost/test';
-  debugDb(`Starting mongodb connection on testing environment to ${mongodbUri}`);
+  debugMongo(`Starting mongodb connection on testing environment to ${mongodbUri}`);
 } else if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   mongodbUri = process.env.MONGO_URI_DEV || 'mongodb://localhost/development';
-  debugDb(`Starting mongodb connection on development environment to ${mongodbUri}`);
+  debugMongo(`Starting mongodb connection on development environment to ${mongodbUri}`);
 } else {
-  debugDb('Starting mongodb connection on production environment');
+  debugMongo('Starting mongodb connection on production environment');
 }
 
-mongoose.connect(mongodbUri, options).then(
-  () => {
-    debugDb('Mongodb connected');
-  },
-  (err) => {
-    debugDb(`Failed to connect to mongodb ${err}`);
-  }
-);
+mongoose.connect(mongodbUri, options).then(() => {
+  debugMongo('Mongodb connected');
+}, (err) => {
+  debugMongo(`Failed to connect to mongodb ${err}`);
+});
 
 const conn = mongoose.connection;
 
@@ -64,7 +60,7 @@ const apiPort = process.env.API_PORT || 3000;
 
 conn.once('open', () => {
   // Wait for the database connection to establish, then start the app.
-  debugApp('Starting Express Boilerplate...');
+  debugApp('Starting Express Server...');
 
   app.listen(apiPort, () => {
     debugApp(`Server running at http://127.0.0.1:${apiPort}/`);

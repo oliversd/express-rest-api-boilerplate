@@ -6,7 +6,6 @@ import createUser from '../config/validator/user-schema';
 
 const router = express.Router();
 
-
 router.get('/', userController.list);
 
 router.post('/', validateRequest(createUser), userController.create);

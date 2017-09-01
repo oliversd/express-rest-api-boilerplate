@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import { debugDb } from '../config/debug';
+import { debugMongo } from '../config/debug';
 
 mongoose.Promise = global.Promise;
 
@@ -11,22 +11,20 @@ mongoose.Promise = global.Promise;
  * @type {Mongoose Schema}
  */
 const userSchema = new mongoose.Schema({
-  emails: [
-    {
-      address: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true
-      },
-      verified: {
-        type: Boolean,
-        default: false
-      },
-      default: Boolean
-    }
-  ],
+  emails: [{
+    address: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true
+    },
+    verified: {
+      type: Boolean,
+      default: false
+    },
+    default: Boolean
+  }],
   password: String,
   profile: {
     firstName: String,
@@ -73,7 +71,7 @@ userSchema.statics = {
     return this.findOne({ 'emails.address': email })
       .exec()
       .then((user) => {
-        debugDb(user);
+        debugMongo(user);
         return user;
       })
       .catch(err => err);
