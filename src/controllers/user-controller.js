@@ -1,7 +1,7 @@
 import User from '../models/user-model';
 
 const getUser = (req, res, next) => {
-  User.findOne({ _id: req.params.id }).then((user) => {
+  User.findById(req.params.id).then((user) => {
     if (!user) {
       res.status(404).json({ status: 'ok', message: 'User not found' });
     } else {
@@ -46,7 +46,7 @@ const updateUser = (req, res, next) => {
     return;
   }
   // Check if the user exist
-  User.findOne({ _id: req.params.id }).then((user) => {
+  User.findById(req.params.id).then((user) => {
     if (!user) {
       res.status(404).json({ status: 'error', error: { message: 'User not found' } });
     } else {

@@ -4,7 +4,7 @@ import Client from '../models/client-model';
  * Load client and append to req.
  */
 function load(req, res, next, id) {
-  Client.get(id)
+  Client.findById(id)
     .then((client) => {
       req.client = client; // eslint-disable-line no-param-reassign
       return next();

@@ -16,7 +16,7 @@ const user = {
   }
 };
 
-let id = null;
+let _id = null;
 
 describe('Example spec for a model', () => {
   before(() => {
@@ -42,22 +42,22 @@ describe('Example spec for a model', () => {
       expect(_user.email).to.equal(user.email);
       expect(_user.profile.firstName).to.equal(user.profile.firstName);
       expect(_user.profile.lastName).to.equal(user.profile.lastName);
-      id = _user._id;
+      _id = _user._id;
       done();
-    }).catch(err => done(err));
+    }).catch(done);
   });
 
   it('can be found by email', (done) => {
-    User.findByEmail('test@test.com').then((_user) => {
+    User.findByEmail(user.email).then((_user) => {
       expect(_user.email).to.equal(user.email);
       expect(_user.profile.firstName).to.equal(user.profile.firstName);
       expect(_user.profile.lastName).to.equal(user.profile.lastName);
       done();
-    }).catch(err => done(err));
+    }).catch(done);
   });
 
   it('can verify password', (done) => {
-    User.findByEmail('test@test.com').then((_user) => {
+    User.findOne({ email: user.email }).then((_user) => {
       _user.verifyPassword(user.password, (err, verified) => {
         if (err) {
           done(err);
@@ -65,7 +65,17 @@ describe('Example spec for a model', () => {
         expect(verified).to.equal(true);
         done();
       });
-    }).catch(err => done(err));
+    }).catch(done);
+  });
+
+  it('can be found by id', (done) => {
+    User.findById(_id).then((_user) => {
+      expect(_user._id.toString()).to.equal(_id.toString());
+      expect(_user.email).to.equal(user.email);
+      expect(_user.profile.firstName).to.equal(user.profile.firstName);
+      expect(_user.profile.lastName).to.equal(user.profile.lastName);
+      done();
+    }).catch(done);
   });
 
   it('can be listed', (done) => {
@@ -73,6 +83,6 @@ describe('Example spec for a model', () => {
       expect(_users).to.be.an('array');
       expect(_users).to.have.lengthOf(1);
       done();
-    }).catch(err => done(err));
+    }).catch(done);
   });
 });

@@ -79,10 +79,24 @@ userSchema.statics = {
    * @param {ObjectId} id - The objectId of user.
    * @returns {Promise<User, APIError>}
    */
+  findById(_id) {
+    return this.findOne({  // eslint-disable-line no-use-before-define
+      _id
+    })
+    .select({ password: 0 }) // always filter the password field
+    .exec();
+  },
+  /**
+   * Get user
+   * @param {ObjectId} email - The email of user.
+   * @returns {Promise<User, APIError>}
+   */
   findByEmail(email) {
     return this.findOne({  // eslint-disable-line no-use-before-define
       email
-    }).exec();
+    })
+    .select({ password: 0 }) // always filter the password field
+    .exec();
   },
 
   /**
