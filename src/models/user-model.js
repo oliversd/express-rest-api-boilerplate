@@ -84,13 +84,7 @@ userSchema.statics = {
   findByEmail(email) {
     return this.findOne({  // eslint-disable-line no-use-before-define
       email
-    }).exec().then((user) => {
-      debugMongo(user);
-      return user;
-    }).catch((err) => {
-      logger.error(err);
-      return err;
-    });
+    }).exec();
   },
 
   /**
@@ -99,10 +93,10 @@ userSchema.statics = {
    * @param {number} limit - Limit number of users to be returned.
    * @returns {Promise<User[]>}
    */
-  list({ skip = 0, limit = 50 } = {}) {
-    return this.find({})
+  list({ query = {}, sort = { _id: -1 }, skip = 0, limit = 50 } = {}) {
+    return this.find(query)
       .select({ password: 0 }) // always filter the password field
-      .sort({ createdAt: -1 })
+      .sort(sort)
       .skip(skip)
       .limit(limit)
       .exec();

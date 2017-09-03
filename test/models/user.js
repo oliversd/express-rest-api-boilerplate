@@ -57,4 +57,12 @@ describe('Example spec for a model', () => {
       });
     }).catch(err => done(err));
   });
+
+  it('can be listed', (done) => {
+    User.list().then((_users) => {
+      expect(_users).to.be.an('array');
+      expect(_users).to.have.lengthOf(1);
+      done();
+    }).catch(err => done(err));
+  });
 });
