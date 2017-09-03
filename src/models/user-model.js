@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import logger from '../helpers/logger';
 import { debugMongo } from '../config/debug';
 
 mongoose.Promise = global.Promise;
@@ -11,53 +12,66 @@ mongoose.Promise = global.Promise;
  * @type {Mongoose Schema}
  */
 const userSchema = new mongoose.Schema({
-  emails: [{
-    address: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true
-    },
-    verified: {
-      type: Boolean,
-      default: false
-    },
-    default: Boolean
-  }],
-  password: String,
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  verified: {
+    type: Boolean,
+    default: false
+  },
+  password: {
+    type: String,
+    required: true
+  },
   profile: {
-    firstName: String,
-    lastName: String
-  },
-  services: {
-    type: Array,
-    default: []
-  },
-  lastLogin: Date
-},
-  {
-    timestamps: true
-  }
-);
-
-// Pre save function
-userSchema.pre('save', function (next) { // eslint-disable-line func-names
-  User.find({ 'emails.address': this.emails[0].address }).exec().then((user) => { // eslint-disable-line no-use-before-define
-    if (user.length > 0) {
-      // Here we don't return user already exist for security reasons
-      next(new Error('Could not complete the request'));
-    } else {
-      bcrypt.hash(this.password, 10).then((hash) => {
-        this.password = hash;
-        return next();
-      }).catch((err) => {
-        throw new Error('Error with password hash', err);
-      });
+    avatar: {
+      type: String,
+      default: null
+    },
+    firstName: {
+      type: String,
+      default: null
+    },
+    lastName: {
+      type: String,
+      default: null
     }
+  },
+  lastLogin: {
+    type: Date,
+    default: null
+  }
+}, { timestamps: true });
+
+/**
+ * Middeware hooks
+ */
+userSchema.pre('save', function (next) { // eslint-disable-line func-names
+  if (!this.isModified('password')) return next();
+  return bcrypt.hash(this.password, 10).then((hash) => {
+    this.password = hash;
+    return next();
+  }).catch((err) => {
+    throw new Error('Error with password hash', err);
   });
 });
-
+/**
+ * Methods
+ */
+userSchema.method({
+  verifyPassword(password, callback) {
+    bcrypt.compare(password, this.password, (err, isMatch) => {
+      if (err) {
+        return callback(err);
+      }
+      return callback(null, isMatch);
+    });
+  }
+});
 /**
  * Statics
  */
@@ -68,13 +82,15 @@ userSchema.statics = {
    * @returns {Promise<User, APIError>}
    */
   findByEmail(email) {
-    return this.findOne({ 'emails.address': email })
-      .exec()
-      .then((user) => {
-        debugMongo(user);
-        return user;
-      })
-      .catch(err => err);
+    return this.findOne({  // eslint-disable-line no-use-before-define
+      email
+    }).exec().then((user) => {
+      debugMongo(user);
+      return user;
+    }).catch((err) => {
+      logger.error(err);
+      return err;
+    });
   },
 
   /**
