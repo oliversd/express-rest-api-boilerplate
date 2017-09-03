@@ -29,7 +29,7 @@ const clientSchema = new mongoose.Schema({
 /**
  * Middeware hooks
  */
-clientSchema.pre('save', function (next) { // eslint-disable-line func-names
+clientSchema.post('save', function (next) { // eslint-disable-line func-names
   if (!this.isModified('secret')) return next();
   return bcrypt.hash(this.secret, 10).then((hash) => {
     this.secret = hash;
