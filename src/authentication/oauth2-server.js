@@ -2,7 +2,6 @@ import oauth2orize from 'oauth2orize';
 import passport from 'passport';
 import crypto from 'crypto';
 
-
 // Models
 import User from '../models/user-model';
 import AccessToken from '../models/accesstoken-model';
@@ -20,8 +19,7 @@ const errFn = (cb, err) => { // eslint-disable-line
 
 // Destruimos los viejos tokens y refreshtoken y generamos nuevos
 function generateTokens(data, done) {
-  const errorHandler = errFn.bind(undefined, done); // eslint-disable-line
-  let datainfo = data; // eslint-disable-line prefer-const
+  const errorHandler = errFn.bind(undefined, done);
 
   // RefreshToken.remove(data, errorHandler);
   // AccessToken.remove(data, errorHandler);
@@ -29,20 +27,19 @@ function generateTokens(data, done) {
   const tokenValue = crypto.randomBytes(32).toString('hex');
   const refreshTokenValue = crypto.randomBytes(32).toString('hex');
 
-  datainfo.token = tokenValue;
-  const token = new AccessToken(datainfo);
+  const dataToken = Object.assign(data, { token: tokenValue });
+  const token = new AccessToken(dataToken);
 
-  datainfo.token = refreshTokenValue;
-  const refreshToken = new RefreshToken(datainfo);
+  const dataRefreshToken = Object.assign(data, { token: refreshTokenValue });
+  const refreshToken = new RefreshToken(dataRefreshToken);
 
   refreshToken.save(errorHandler);
 
   token.save()
-  .then(() => done(null, tokenValue, refreshTokenValue, {
-    expires_in: process.env.TOKEN_EXPIRATION_TIME || 3600
-  })
-  )
-  .catch(error => done(error));
+    .then(() => done(null, tokenValue, refreshTokenValue, {
+      expires_in: process.env.TOKEN_EXPIRATION_TIME || 3600
+    }))
+    .catch(error => done(error));
 }
 /**
  * Access Token Exchange
@@ -85,18 +82,18 @@ aserver.exchange(oauth2orize.exchange.refreshToken((client, refreshToken, scope,
     }
 
     User.findByEmail(token.email)
-    .then((user) => {
-      if (!user) {
-        return done(null, false);
-      }
-      const model = {
-        email: user.email,
-        clientId: client.id
-      };
+      .then((user) => {
+        if (!user) {
+          return done(null, false);
+        }
+        const model = {
+          email: user.email,
+          clientId: client.id
+        };
 
-      generateTokens(model, done);
-      return true;
-    }).catch(error => done(error));
+        generateTokens(model, done);
+        return true;
+      }).catch(error => done(error));
 
     return true;
   });

@@ -11,7 +11,7 @@ import AccessToken from '../models/accesstoken-model';
 /* passport.use(new BasicStrategy((clientId, clientSecret, done) => {
   console.log('Basic Strategy');
   Client.findOne({ id: clientId }, (err, client) => {
-    if (err) {
+    if (err) {npm remove mongoos
       return done(err);
     }
     if (!client) {
@@ -28,16 +28,16 @@ import AccessToken from '../models/accesstoken-model';
 passport.use(new ClientPasswordStrategy.Strategy(
   (id, secret, done) => {
     Client.findOne({ id })
-    .exec()
-    .then((client) => {
-      if (!client) {
-        return done(null, false);
-      }
-      if (client.secret !== secret) {
-        return done(null, false);
-      }
-      return done(null, client);
-    }).catch(error => done(error));
+      .exec()
+      .then((client) => {
+        if (!client) {
+          return done(null, false);
+        }
+        if (client.secret !== secret) {
+          return done(null, false);
+        }
+        return done(null, client);
+      }).catch(error => done(error));
   }
 ));
 

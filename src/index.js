@@ -35,13 +35,13 @@ const options = {
   }
 };
 
-let mongodbUri = process.env.MONGO_URI || 'mongodb://localhost/development';
+let mongodbUri = process.env.MONGO_URI || 'mongodb://localhost/devApiDb';
 
 if (process.env.NODE_ENV === 'test') {
-  mongodbUri = process.env.MONGO_URI_TEST || 'mongodb://localhost/test';
+  mongodbUri = process.env.MONGO_URI || 'mongodb://localhost/testApiDb';
   debugMongo(`Starting mongodb connection on testing environment to ${mongodbUri}`);
 } else if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  mongodbUri = process.env.MONGO_URI_DEV || 'mongodb://localhost/development';
+  mongodbUri = process.env.MONGO_URI || 'mongodb://localhost/devApiDb';
   debugMongo(`Starting mongodb connection on development environment to ${mongodbUri}`);
 } else {
   debugMongo('Starting mongodb connection on production environment');
