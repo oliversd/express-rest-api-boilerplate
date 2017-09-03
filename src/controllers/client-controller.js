@@ -36,11 +36,9 @@ function create(req, res, next) {
     name: req.body.name
   });
 
-  client.save()
-    .then((savedClient) => {
-      res.status(200).json({ status: 'ok', client: { id: savedClient.id, secret: savedClient.secret } });
-    })
-    .catch(e => next(e));
+  client.save().then((savedClient) => {
+    res.status(201).json({ status: 'ok', client: { id: savedClient.id, secret: savedClient.secret } });
+  }).catch(e => next(e));
 }
 
 /**

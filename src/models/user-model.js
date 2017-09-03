@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import logger from '../helpers/logger';
-import { debugMongo } from '../config/debug';
 
 mongoose.Promise = global.Promise;
 

@@ -16,10 +16,19 @@ const user = {
   }
 };
 
+let id = null;
+
 describe('Example spec for a model', () => {
   before(() => {
     // runs before all tests in this block
-    mongoose.connect(dbURI);
+    mongoose.connect(dbURI, {
+      server: {
+        // sets how many times to try reconnecting
+        reconnectTries: Number.MAX_VALUE,
+        // sets the delay between every retry (milliseconds)
+        reconnectInterval: 1000
+      }
+    });
   });
 
   after(() => {
@@ -33,6 +42,7 @@ describe('Example spec for a model', () => {
       expect(_user.email).to.equal(user.email);
       expect(_user.profile.firstName).to.equal(user.profile.firstName);
       expect(_user.profile.lastName).to.equal(user.profile.lastName);
+      id = _user._id;
       done();
     }).catch(err => done(err));
   });

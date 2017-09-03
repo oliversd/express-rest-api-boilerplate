@@ -1,47 +1,36 @@
 import User from '../models/user-model';
 
-
 const getUser = (req, res) => {
-  User.get(req.params.id)
-    .then((user) => {
-      if (!user) {
-        res.status(404).json({ status: 'ok', message: 'User not found' });
-      } else {
-        res.status(200).json({ status: 'ok', user });
-      }
-    })
-    .catch(error => res.status(500).json({ status: 'error', error }));
+  User.get(req.params.id).then((user) => {
+    if (!user) {
+      res.status(404).json({ status: 'ok', message: 'User not found' });
+    } else {
+      res.status(200).json({ status: 'ok', user });
+    }
+  }).catch(error => res.status(500).json({ status: 'error', error }));
 };
 
 const list = (req, res) => {
   // const { limit = 50, skip = 0 } = req.query;
-  User.list({})
-    .then((users) => {
-      res.status(200).json({ status: 'ok', users });
-    })
-    .catch(error => res.status(500).json({ status: 'error', error }));
+  User.list({}).then((users) => {
+    res.status(200).json({ status: 'ok', users });
+  }).catch(error => res.status(500).json({ status: 'error', error }));
 };
 
 const create = (req, res) => {
   const user = new User({
-    'emails.0.address': req.body.email,
-    'emails.0.default': true,
+    email: req.body.email,
     password: req.body.password,
-    services: [
-        { type: 'password', email: req.body.email }
-    ],
     profile: {
-      firstName: req.body.firstName || '',
-      lastName: req.body.lastName || ''
+      firstName: req.body.firstName || null,
+      lastName: req.body.lastName || null
     }
   });
 
-  user.save()
-    .then(() => {
-      res.status(200).json({ status: 'ok', message: 'User created' });
-      return true;
-    })
-    .catch(error => res.status(400).json({ status: 'error', error: error.message }));
+  user.save().then(() => {
+    res.status(201).json({ status: 'ok', message: 'User created' });
+    return true;
+  }).catch(error => res.status(400).json({ status: 'error', error: error.message }));
 };
 
 const update = (req, res) => {
@@ -55,16 +44,15 @@ const update = (req, res) => {
     return;
   }
   // Check if the user exist
-  User.get(req.params.id)
-    .then((user) => {
-      if (!user) {
-        res.status(400).json({ status: 'error', error: { msg: 'User not found' } });
-      } else {
-        const updatedUser = {
-          'profile.firstName': req.body.firstName || user.profile.firstName,
-          'profile.lastName': req.body.lastName || user.profile.lastName
-        };
-        User.update({ _id: req.params.id }, { $set: updatedUser })
+  User.get(req.params.id).then((user) => {
+    if (!user) {
+      res.status(404).json({ status: 'error', error: { msg: 'User not found' } });
+    } else {
+      const updatedUser = {
+        'profile.firstName': req.body.firstName || user.profile.firstName,
+        'profile.lastName': req.body.lastName || user.profile.lastName
+      };
+      User.update({ _id: req.params.id }, { $set: updatedUser })
         .exec()
         .then(() => {
           res.status(200).json({ status: 'ok', message: 'User updated' });
@@ -72,9 +60,8 @@ const update = (req, res) => {
         .catch(() => {
           res.status(500).json({ status: 'error', message: 'Could no fullfill the request' });
         });
-      }
-    })
-    .catch(error => res.status(500).json({ status: 'error', error }));
+    }
+  }).catch(error => res.status(500).json({ status: 'error', error }));
 };
 
 export default { list, create, getUser, update };
