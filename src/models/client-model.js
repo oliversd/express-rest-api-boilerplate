@@ -27,18 +27,6 @@ const clientSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 /**
- * Middeware hooks
- */
-clientSchema.post('save', function (next) { // eslint-disable-line func-names
-  if (!this.isModified('secret')) return next();
-  return bcrypt.hash(this.secret, 10).then((hash) => {
-    this.secret = hash;
-    return next();
-  }).catch((err) => {
-    throw new Error('Error with secret hash', err);
-  });
-});
-/**
  * Methods
  */
 clientSchema.method({

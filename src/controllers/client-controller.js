@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+import logger from '../helpers/logger';
 import Client from '../models/client-model';
 
 /**
@@ -28,6 +30,19 @@ const createClient = (req, res, next) => {
 
   client.save().then((savedClient) => {
     res.status(201).json({ status: 'ok', client: savedClient });
+    bcrypt.hash(savedClient.secret, 10).then((hash) => {
+      Client.update({ _id: savedClient._id }, { $set: { secret: hash } })
+        .exec()
+        .then(() => {
+          logger.info(`Client ${savedClient.id} saved`);
+        })
+        .catch((err) => {
+          logger.error(err.message);
+        });
+      return next();
+    }).catch((err) => {
+      throw new Error('Error with secret hash', err);
+    });
   }).catch(e => next(e));
 };
 
