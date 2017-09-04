@@ -1,5 +1,5 @@
 import logger from '../helpers/logger';
-import Client from '../models/client-model';
+import Client from '../models/client';
 
 /**
  * Get client

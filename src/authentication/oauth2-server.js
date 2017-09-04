@@ -3,9 +3,9 @@ import passport from 'passport';
 import crypto from 'crypto';
 
 // Models
-import User from '../models/user-model';
-import AccessToken from '../models/accesstoken-model';
-import RefreshToken from '../models/refreshtoken-model';
+import User from '../models/user';
+import AccessToken from '../models/accesstoken';
+import RefreshToken from '../models/refreshtoken';
 
 // We create a Oauth2 server
 const aserver = oauth2orize.createServer();

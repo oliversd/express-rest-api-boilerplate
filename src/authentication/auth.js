@@ -1,9 +1,9 @@
 import passport from 'passport';
 import * as ClientPasswordStrategy from 'passport-oauth2-client-password';
 import * as BearerStrategy from 'passport-http-bearer';
-import User from '../models/user-model';
-import Client from '../models/client-model';
-import AccessToken from '../models/accesstoken-model';
+import User from '../models/user';
+import Client from '../models/client';
+import AccessToken from '../models/accesstoken';
 
 passport.use(new ClientPasswordStrategy.Strategy((id, secret, done) => {
   Client.findOne({ id })

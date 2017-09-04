@@ -4,12 +4,12 @@ mongoose.Promise = global.Promise;
 /**
  * RefreshToken Schema
  */
-const RefreshTokenSchema = new mongoose.Schema({
-  userId: {
+const refreshTokenSchema = new mongoose.Schema({
+  _user: {
     type: String,
     required: true
   },
-  clientId: {
+  _client: {
     type: String,
     required: true
   },
@@ -18,10 +18,8 @@ const RefreshTokenSchema = new mongoose.Schema({
     unique: true,
     required: true
   }
-}, {
-  timestamps: true
-});
+}, { timestamps: true });
 
-const RefreshToken = mongoose.model('RefreshToken', RefreshTokenSchema, 'refreshTokens');
+const RefreshToken = mongoose.model('RefreshToken', refreshTokenSchema, 'refreshTokens');
 
 export default RefreshToken;

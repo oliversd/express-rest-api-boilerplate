@@ -1,4 +1,4 @@
-import User from '../models/user-model';
+import User from '../models/user';
 
 const getUser = (req, res, next) => {
   User.findById(req.params.id).then((user) => {

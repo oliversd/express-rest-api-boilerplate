@@ -1,6 +1,7 @@
 import chai from 'chai';
 import mongoose from 'mongoose';
-import User from '../../src/models/user-model';
+import User from '../../src/models/user';
+import logger from '../../src/helpers/logger';
 
 const expect = chai.expect;
 const dbURI = 'mongodb://localhost/testing-db';
@@ -28,13 +29,14 @@ describe('User spec for a model', () => {
         // sets the delay between every retry (milliseconds)
         reconnectInterval: 1000
       }
-    });
+    }).catch(err => logger.error(err));
   });
 
   after(() => {
     // runs after all tests in this block
-    mongoose.connection.db.dropDatabase();
-    mongoose.connection.close();
+    // mongoose.connection.db.dropDatabase().catch(err => logger.error(err));
+    User.remove().exec();
+    mongoose.connection.close().catch(err => logger.error(err));
   });
 
   it('can be saved', (done) => {
