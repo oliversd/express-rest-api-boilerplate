@@ -41,12 +41,9 @@
     "eslint-config-airbnb-base": "11.1.1",
     "eslint-plugin-import": "2.2.0",
     "eslint-watch": "^3.0.1",
-    "http-status": "^1.0.1",
     "mocha": "^3.5.0",
-    "mocha-mongoose": "^1.2.0",
     "nodemon": "^1.11.0",
-    "supertest": "^3.0.0",
-    "supertest-as-promised": "^4.0.2"
+    "supertest": "^3.0.0"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",
@@ -62,9 +59,7 @@
     "mongoose": "4.10.8",
     "oauth2orize": "^1.10.0",
     "passport": "^0.4.0",
-    "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
-    "passport-local": "^1.0.0",
     "passport-oauth2-client-password": "^0.1.2",
     "pino": "^4.7.1",
     "redis": "^2.8.0",
