@@ -12,6 +12,6 @@ router.post('/', validateRequest(createUser), userController.create);
 
 router.get('/:id', validateRequest(findUser), userController.getUser);
 
-router.post('/', validateRequest(createUser), userController.create);
+router.put('/:id', validateRequest(updateUser), userController.update);
 
 export default router;

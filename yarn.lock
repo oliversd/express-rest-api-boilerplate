@@ -854,7 +854,7 @@ bluebird@2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
 
-bluebird@^3.4.0, bluebird@^3.4.7:
+bluebird@^3.3.1, bluebird@^3.4.0, bluebird@^3.4.7:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
@@ -1118,6 +1118,10 @@ cookiejar@2.0.x, cookiejar@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/cookiejar/-/cookiejar-2.0.6.tgz#0abf356ad00d1c5a219d88d44518046dd026acfe"
 
+cookiejar@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/cookiejar/-/cookiejar-2.1.1.tgz#41ad57b1b555951ec171412a81942b1e8200d34a"
+
 core-js@^2.4.0, core-js@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.0.tgz#569c050918be6486b3837552028ae0466b717086"
@@ -1165,7 +1169,7 @@ debug@2.6.7:
   dependencies:
     ms "2.0.0"
 
-debug@2.6.8, debug@2.x.x, debug@^2.1.1, debug@^2.2.0, debug@^2.6.1, debug@^2.6.3, debug@^2.6.8:
+debug@2.6.8, debug@2.x.x, debug@^2.1.1, debug@^2.2.0, debug@^2.6.0, debug@^2.6.1, debug@^2.6.3, debug@^2.6.8:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
@@ -1717,6 +1721,14 @@ form-data@1.0.0-rc4:
     combined-stream "^1.0.5"
     mime-types "^2.1.10"
 
+form-data@^2.1.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.1.tgz#6fb94fbd71885306d73d15cc497fe4cc4ecd44bf"
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.5"
+    mime-types "^2.1.12"
+
 form-data@~2.1.1:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.1.4.tgz#33c183acf193276ecaa98143a69e94bfee1750d1"
@@ -1725,7 +1737,7 @@ form-data@~2.1.1:
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
 
-formidable@^1.0.17:
+formidable@^1.0.17, formidable@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/formidable/-/formidable-1.1.1.tgz#96b8886f7c3c3508b932d6bd70c4d3a88f35f1a9"
 
@@ -2009,6 +2021,10 @@ http-signature@~1.1.0:
     assert-plus "^0.2.0"
     jsprim "^1.2.2"
     sshpk "^1.7.0"
+
+http-status@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/http-status/-/http-status-1.0.1.tgz#dc43001a8bfc50ac87d485a892f7578964bc94a2"
 
 iconv-lite@0.4.15:
   version "0.4.15"
@@ -2294,9 +2310,9 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-kareem@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.5.0.tgz#e3e4101d9dcfde299769daf4b4db64d895d17448"
+kareem@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.4.1.tgz#ed76200044fa041ef32b4da8261e2553f1173531"
 
 keypress@^0.2.1:
   version "0.2.1"
@@ -2495,6 +2511,10 @@ mime@1.3.4, mime@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.4.tgz#115f9e3b6b3daf2959983cb38f149a2d40eb5d53"
 
+mime@^1.3.6:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-1.4.0.tgz#69e9e0db51d44f2a3b56e48b7817d7d137f1a343"
+
 minimatch@^3.0.0, minimatch@^3.0.2, minimatch@^3.0.3, minimatch@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
@@ -2515,7 +2535,11 @@ mkdirp@0.5.1, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha@^3.2.0:
+mocha-mongoose@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/mocha-mongoose/-/mocha-mongoose-1.2.0.tgz#d07066262668864c304e348b1670bc52ba25cdf3"
+
+mocha@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.5.0.tgz#1328567d2717f997030f8006234bce9b8cd72465"
   dependencies:
@@ -2531,35 +2555,35 @@ mocha@^3.2.0:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
-mongodb-core@2.1.15:
-  version "2.1.15"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.1.15.tgz#841f53b87ffff4c7458189c35c8ae827e1169764"
+mongodb-core@2.1.11:
+  version "2.1.11"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.1.11.tgz#1c38776ceb174997a99c28860eed9028da9b3e1a"
   dependencies:
     bson "~1.0.4"
     require_optional "~1.0.0"
 
-mongodb@2.2.31:
-  version "2.2.31"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.31.tgz#1940445c661e19217bb3bf8245d9854aaef548db"
+mongodb@2.2.27:
+  version "2.2.27"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.27.tgz#34122034db66d983bcf6ab5adb26a24a70fef6e6"
   dependencies:
     es6-promise "3.2.1"
-    mongodb-core "2.1.15"
+    mongodb-core "2.1.11"
     readable-stream "2.2.7"
 
-mongoose@^4.8.6:
-  version "4.11.9"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.11.9.tgz#58f89a72e75674d9bcdfa4e65ebe1b49b4477637"
+mongoose@4.10.8:
+  version "4.10.8"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.10.8.tgz#31f44ed7884756f9fd9b7708ddcb3fcb4250f34e"
   dependencies:
     async "2.1.4"
     bson "~1.0.4"
     hooks-fixed "2.0.0"
-    kareem "1.5.0"
-    mongodb "2.2.31"
+    kareem "1.4.1"
+    mongodb "2.2.27"
     mpath "0.3.0"
     mpromise "0.5.5"
     mquery "2.3.1"
     ms "2.0.0"
-    muri "1.2.2"
+    muri "1.2.1"
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
@@ -2584,9 +2608,9 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
-muri@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/muri/-/muri-1.2.2.tgz#63198132650db08a04cc79ccd00dd389afd2631c"
+muri@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/muri/-/muri-1.2.1.tgz#ec7ea5ce6ca6a523eb1ab35bacda5fa816c9aa3c"
 
 mute-stream@0.0.5:
   version "0.0.5"
@@ -2784,6 +2808,12 @@ passport-http@^0.3.0:
   dependencies:
     passport-strategy "1.x.x"
 
+passport-local@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-local/-/passport-local-1.0.0.tgz#1fe63268c92e75606626437e3b906662c15ba6ee"
+  dependencies:
+    passport-strategy "1.x.x"
+
 passport-oauth2-client-password@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/passport-oauth2-client-password/-/passport-oauth2-client-password-0.1.2.tgz#4f378b678b92d16dbbd233a6c706520093e561ba"
@@ -2935,7 +2965,7 @@ qs@6.4.0, qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
-qs@6.5.0, qs@^6.1.0, qs@^6.2.0:
+qs@6.5.0, qs@^6.1.0, qs@^6.2.0, qs@^6.4.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.0.tgz#8d04954d364def3efc55b5a0793e1e2c8b1e6e49"
 
@@ -3415,6 +3445,35 @@ superagent@^2.0.0:
     qs "^6.1.0"
     readable-stream "^2.0.5"
 
+superagent@^3.0.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/superagent/-/superagent-3.6.0.tgz#eb679651057c3462199c7b902b696c25350e1b87"
+  dependencies:
+    component-emitter "^1.2.0"
+    cookiejar "^2.1.0"
+    debug "^2.6.0"
+    extend "^3.0.0"
+    form-data "^2.1.1"
+    formidable "^1.1.1"
+    methods "^1.1.1"
+    mime "^1.3.6"
+    qs "^6.4.0"
+    readable-stream "^2.0.5"
+
+supertest-as-promised@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/supertest-as-promised/-/supertest-as-promised-4.0.2.tgz#0464f2bd256568d4a59bce84269c0548f6879f1a"
+  dependencies:
+    bluebird "^3.3.1"
+    methods "^1.1.1"
+
+supertest@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/supertest/-/supertest-3.0.0.tgz#8d4bb68fd1830ee07033b1c5a5a9a4021c965296"
+  dependencies:
+    methods "~1.1.2"
+    superagent "^3.0.0"
+
 supports-color@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-3.1.2.tgz#72a262894d9d408b956ca05ff37b2ed8a6e2a2d5"
@@ -3603,7 +3662,7 @@ uuid@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 
-uuid@^3.0.0:
+uuid@^3.0.0, uuid@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 

@@ -30,6 +30,6 @@ const router = express.Router(); // eslint-disable-line new-cap
  *       token_type: 'Bearer'
  *     }
  */
-router.post('/oauth/token', oauth2.token);
+router.post('/oauth', oauth2.token);
 
 export default router;

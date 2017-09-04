@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import uuid from 'uuid';
-import { debugDb } from '../config/debug';
+import bcrypt from 'bcrypt';
 
 mongoose.Promise = global.Promise;
 
@@ -24,43 +24,57 @@ const clientSchema = new mongoose.Schema({
     unique: true,
     default: () => uuid.v4()
   }
-},
-  {
-    timestamps: true
+}, { timestamps: true });
+
+/**
+ * Methods
+ */
+clientSchema.method({
+  verifySecret(secret, callback) {
+    bcrypt.compare(secret, this.secret, (err, isMatch) => {
+      if (err) {
+        return callback(err);
+      }
+      return callback(null, isMatch);
+    });
   }
-);
+});
 
 /**
  * ClientSchem Static Methods
  */
 clientSchema.statics = {
-
+  encryptSecret(id, callback) {
+    this.findOne({
+      $or: [{  // eslint-disable-line no-use-before-define
+        _id: id
+      }, { id }]
+    }).exec().then((client) => {
+      bcrypt.hash(client.secret, 10).then((hash) => {
+        client.secret = hash; // eslint-disable-line
+        client.save().then(res => callback(null, res)).catch(callback);
+      });
+    }).catch(callback);
+  },
   /**
-   * Get client by id
-   * @param {ObjectId} id - The objectId of user.
+   * Get user
+   * @param {ObjectId} id - The UUID or ObjectId of user.
    * @returns {Promise<User, APIError>}
    */
-  get(id) {
-    return this.findOne({ id })
-      .select({ _id: 0, __v: 0 })
-      .exec()
-      .then(client => client)
-      .catch((error) => {
-        debugDb('Client Schema Error', error);
-        throw error;
-      });
+  findById(id) {
+    return this.findOne({ _id: id })
+      .select({ secret: 0 }).exec(); // always filter the secret field
   },
-
   /**
    * List clients  in descending order of 'createdAt' timestamp.
    * @param {number} skip - Number of clients to be skipped.
    * @param {number} limit - Limit number of clients to be returned.
    * @returns {Promise<User[]>}
    */
-  list({ skip = 0, limit = 50 } = {}) {
-    return this.find({})
-      .select({ __v: 0 }) // always filter the password field
-      .sort({ createdAt: -1 })
+  list({ query = {}, sort = { _id: -1 }, skip = 0, limit = 50 } = {}) {
+    return this.find(query)
+      .select({ secret: 0 }) // always filter the secret field
+      .sort(sort)
       .skip(skip)
       .limit(limit)
       .exec();
