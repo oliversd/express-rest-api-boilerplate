@@ -18,7 +18,7 @@ const user = {
 
 let _id = null;
 
-describe('Example spec for a model', () => {
+describe('User spec for a model', () => {
   before(() => {
     // runs before all tests in this block
     mongoose.connect(dbURI, {
