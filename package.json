@@ -59,6 +59,7 @@
     "mongoose": "4.10.8",
     "oauth2orize": "^1.10.0",
     "passport": "^0.4.0",
+    "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2-client-password": "^0.1.2",
     "pino": "^4.7.1",

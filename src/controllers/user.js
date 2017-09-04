@@ -58,7 +58,7 @@ const updateUser = (req, res, next) => {
       User.update({ _id: req.params.id }, { $set: updatedUser })
         .exec()
         .then(() => {
-          res.status(200).json({ status: 'ok', message: 'User updated' });
+          res.status(205).json({ status: 'ok', message: 'User updated' });
         })
         .catch(next);
     }

@@ -6,11 +6,11 @@ mongoose.Promise = global.Promise;
  */
 // TODO: add validations
 const accessTokenSchema = new mongoose.Schema({
-  _user: {
+  username: {
     type: String,
     required: true
   },
-  _client: {
+  clientId: {
     type: String,
     required: true
   },

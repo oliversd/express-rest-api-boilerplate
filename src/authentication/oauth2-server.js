@@ -24,33 +24,31 @@ function generateTokens(data, done) {
   // RefreshToken.remove(data, errorHandler);
   // AccessToken.remove(data, errorHandler);
 
-  const tokenValue = crypto.randomBytes(32).toString('hex');
+  const accessTokenValue = crypto.randomBytes(32).toString('hex');
   const refreshTokenValue = crypto.randomBytes(32).toString('hex');
 
-  const dataToken = Object.assign(data, { token: tokenValue });
-  const token = new AccessToken(dataToken);
+  const dataAccessToken = Object.assign(data, { token: accessTokenValue });
+  const accessToken = new AccessToken(dataAccessToken);
 
   const dataRefreshToken = Object.assign(data, { token: refreshTokenValue });
   const refreshToken = new RefreshToken(dataRefreshToken);
 
   refreshToken.save(errorHandler);
 
-  token.save()
-    .then(() => done(null, tokenValue, refreshTokenValue, {
-      expires_in: process.env.TOKEN_EXPIRATION_TIME || 3600
-    }))
-    .catch(error => done(error));
+  accessToken.save().then(() => done(null, accessTokenValue, refreshTokenValue, {
+    expires_in: process.env.TOKEN_EXPIRATION_TIME || 3600
+  })).catch(done);
 }
 /**
  * Access Token Exchange
  */
-aserver.exchange(oauth2orize.exchange.password((client, email, password, scope, done) => {
-  User.findByEmail(email)
+aserver.exchange(oauth2orize.exchange.password((client, username, password, scope, done) => {
+  User.findByEmail(username)
     .then((user) => { // eslint-disable-line consistent-return
       if (!user) {
         return done(null, false);
       }
-      user.comparePassword(password, (error, isMatch) => {
+      user.verifyPassword(password, (error, isMatch) => {
         if (error) {
           return done(error);
         }
@@ -59,7 +57,7 @@ aserver.exchange(oauth2orize.exchange.password((client, email, password, scope, 
         }
 
         const model = {
-          userId: user._id,
+          username: user.email,
           clientId: client.id
         };
 
@@ -76,21 +74,18 @@ aserver.exchange(oauth2orize.exchange.refreshToken((client, refreshToken, scope,
     if (err) {
       return done(err);
     }
-
     if (!token) {
       return done(null, false);
     }
-
-    User.findByEmail(token.email)
+    User.findByEmail(token.username)
       .then((user) => {
         if (!user) {
           return done(null, false);
         }
         const model = {
-          email: user.email,
+          username: user.username,
           clientId: client.id
         };
-
         generateTokens(model, done);
         return true;
       }).catch(error => done(error));
@@ -109,5 +104,5 @@ aserver.exchange(oauth2orize.exchange.refreshToken((client, refreshToken, scope,
 exports.token = [
   passport.authenticate(['oauth2-client-password'], { session: false }),
   aserver.token(),
-  aserver.errorHandler(),
+  aserver.errorHandler()
 ];

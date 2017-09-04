@@ -26,6 +26,7 @@ app.use(helmet()); // for a little security. https://github.com/helmetjs/helmet
 app.use(cors());
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api', globalRateLimit, debugRoute, routes);
 
