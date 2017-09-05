@@ -53,9 +53,7 @@ userSchema.pre('save', function (next) { // eslint-disable-line func-names
   return bcrypt.hash(this.password, 10).then((hash) => {
     this.password = hash;
     return next();
-  }).catch((err) => {
-    throw new Error('Error with password hash', err);
-  });
+  }).catch(next);
 });
 /**
  * Methods

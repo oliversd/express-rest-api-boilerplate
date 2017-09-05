@@ -17,6 +17,9 @@ const app = express();
 
 app.use(methodOverride());
 
+require('../authentication/auth');
+require('./seed');
+
 // Configure bodyParser
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // use qs library https://github.com/expressjs/body-parser#extended
@@ -26,6 +29,7 @@ app.use(helmet()); // for a little security. https://github.com/helmetjs/helmet
 app.use(cors());
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api', globalRateLimit, debugRoute, routes);
 

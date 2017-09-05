@@ -5,15 +5,25 @@ mongoose.Promise = global.Promise;
  * AccessToken Schema
  */
 // TODO: add validations
-const AccessTokenSchema = new mongoose.Schema({
-  userId: {
+const accessTokenSchema = new mongoose.Schema({
+  _user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  _client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Client',
+    required: true
+  },
+  /*username: {
     type: String,
     required: true
   },
   clientId: {
     type: String,
     required: true
-  },
+  },*/
   expires: {
     type: Date,
     default: () => {
@@ -29,11 +39,9 @@ const AccessTokenSchema = new mongoose.Schema({
     unique: true,
     required: true
   }
-}, {
-  timestamps: true
-});
+}, { timestamps: true });
 
 // Define AccessToken
-const AccessToken = mongoose.model('AccessToken', AccessTokenSchema, 'accessTokens');
+const AccessToken = mongoose.model('AccessToken', accessTokenSchema, 'accessTokens');
 
 export default AccessToken;
