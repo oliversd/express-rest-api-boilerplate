@@ -17,6 +17,9 @@ const app = express();
 
 app.use(methodOverride());
 
+require('../authentication/auth');
+require('./seed');
+
 // Configure bodyParser
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // use qs library https://github.com/expressjs/body-parser#extended

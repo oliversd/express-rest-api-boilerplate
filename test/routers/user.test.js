@@ -10,7 +10,7 @@ chai.should();
 
 const server = require('../../src/config/app');
 
-const dbURI = 'mongodb://localhost/testing-db';
+const dbURI = 'mongodb://localhost/testApiDb';
 describe('User spec for a routes', () => {
   before(() => {
     // runs before all tests in this block

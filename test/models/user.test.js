@@ -4,7 +4,7 @@ import User from '../../src/models/user';
 import logger from '../../src/helpers/logger';
 
 const expect = chai.expect;
-const dbURI = 'mongodb://localhost/testing-db';
+const dbURI = 'mongodb://localhost/testApiDb';
 
 mongoose.Promise = global.Promise;
 

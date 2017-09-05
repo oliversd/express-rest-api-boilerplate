@@ -5,14 +5,24 @@ mongoose.Promise = global.Promise;
  * RefreshToken Schema
  */
 const refreshTokenSchema = new mongoose.Schema({
-  username: {
+  _user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  _client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Client',
+    required: true
+  },
+  /*username: {
     type: String,
     required: true
   },
   clientId: {
     type: String,
     required: true
-  },
+  },*/
   token: {
     type: String,
     unique: true,

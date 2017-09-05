@@ -15,7 +15,7 @@ const expect = chai.expect;
 
 const server = require('../../src/config/app');
 
-const dbURI = 'mongodb://localhost/testing-db';
+const dbURI = 'mongodb://localhost/testApiDb';
 describe('Auth spec for a routes', () => {
   before(() => {
     // runs before all tests in this block
@@ -47,6 +47,7 @@ describe('Auth spec for a routes', () => {
   };
 
   let client = null;
+  let token = null;
 
   describe('POST /api/users', () => {
     it('it should create a new client', (done) => {
@@ -73,11 +74,8 @@ describe('Auth spec for a routes', () => {
     });
   });
 
-  /*
-   * Test the /POST route
-   */
   describe('POST /api/auth/oauth', () => {
-    it('it should login an user', (done) => {
+    it('it should give a valid auth info', (done) => {
       const auth = {
         username: user.email,
         password: user.password,
@@ -89,10 +87,36 @@ describe('Auth spec for a routes', () => {
         .post('/api/auth/oauth')
         .send(auth)
         .end((err, res) => {
-          // res.should.have.status(201);
-          // res.body.should.be.a('object');
-          console.log(auth);
-          console.log(res.body);
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('access_token');
+          res.body.should.have.property('refresh_token');
+          res.body.should.have.property('expires_in');
+          res.body.should.have.property('token_type').equal('Bearer');
+          token = res.body;
+          return done();
+        });
+    });
+  });
+
+  describe('POST /api/auth/oauth', () => {
+    it('it should give a valid refresh token', (done) => {
+      const auth = {
+        grant_type: 'refresh_token',
+        refresh_token: token.refresh_token,
+        client_id: client.id,
+        client_secret: client.secret
+      };
+      chai.request(server)
+        .post('/api/auth/oauth')
+        .send(auth)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('access_token');
+          res.body.should.have.property('refresh_token');
+          res.body.should.have.property('expires_in');
+          res.body.should.have.property('token_type').equal('Bearer');
           return done();
         });
     });

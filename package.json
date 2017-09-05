@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "DEBUG='app, mongo, redis, route' nodemon src/index.js --exec babel-node",
-    "test": "./node_modules/.bin/mocha --ui bdd --reporter spec --colors --compilers js:babel-core/register test --recursive --require babel-polyfill",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --ui bdd --reporter spec --colors --compilers js:babel-core/register test --recursive --require babel-polyfill",
     "clean": "rm -rf dist",
     "build": "npm run lint && npm run clean && mkdir dist && cp package.json dist/. && cp yarn.lock dist/. && babel src -s -d dist",
     "serve": "npm run build && DEBUG=* node dist/index.js",
@@ -59,7 +59,6 @@
     "mongoose": "4.10.8",
     "oauth2orize": "^1.10.0",
     "passport": "^0.4.0",
-    "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2-client-password": "^0.1.2",
     "pino": "^4.7.1",

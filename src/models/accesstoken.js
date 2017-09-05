@@ -6,14 +6,24 @@ mongoose.Promise = global.Promise;
  */
 // TODO: add validations
 const accessTokenSchema = new mongoose.Schema({
-  username: {
+  _user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  _client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Client',
+    required: true
+  },
+  /*username: {
     type: String,
     required: true
   },
   clientId: {
     type: String,
     required: true
-  },
+  },*/
   expires: {
     type: Date,
     default: () => {
