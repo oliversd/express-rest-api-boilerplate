@@ -45,11 +45,7 @@ clientSchema.method({
  */
 clientSchema.statics = {
   encryptSecret(id, callback) {
-    this.findOne({
-      $or: [{  // eslint-disable-line no-use-before-define
-        _id: id
-      }, { id }]
-    }).exec().then((client) => {
+    return this.findOne({ _id: id }).exec().then((client) => {
       bcrypt.hash(client.secret, 10).then((hash) => {
         client.secret = hash; // eslint-disable-line
         client.save().then(res => callback(null, res)).catch(callback);
@@ -63,7 +59,8 @@ clientSchema.statics = {
    */
   findById(id) {
     return this.findOne({ _id: id })
-      .select({ secret: 0 }).exec(); // always filter the secret field
+      .select({ secret: 0 }) // always filter the secret field
+      .exec();
   },
   /**
    * List clients  in descending order of 'createdAt' timestamp.

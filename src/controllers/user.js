@@ -1,4 +1,4 @@
-import User from '../models/user-model';
+import User from '../models/user';
 
 const getUser = (req, res, next) => {
   User.findById(req.params.id).then((user) => {
@@ -58,7 +58,7 @@ const updateUser = (req, res, next) => {
       User.update({ _id: req.params.id }, { $set: updatedUser })
         .exec()
         .then(() => {
-          res.status(200).json({ status: 'ok', message: 'User updated' });
+          res.status(205).json({ status: 'ok', message: 'User updated' });
         })
         .catch(next);
     }
