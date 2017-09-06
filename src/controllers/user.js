@@ -1,4 +1,6 @@
 import User from '../models/user';
+import mailQueue from '../helpers/mail-queue';
+import logger from '../helpers/logger';
 
 const getUser = (req, res, next) => {
   User.findById(req.params.id).then((user) => {
@@ -27,6 +29,18 @@ const createUser = (req, res, next) => {
   });
 
   user.save().then(() => {
+    if (process.env.NODE_ENV === 'production') {
+      mailQueue.enqueueJob('verify', {
+        from: process.env.MAIL_USERNAME,
+        to: user.email,
+        subject: 'Wellcome to appName, please verify your email',
+        html: '<pre_built_html_template_with_link>'
+      }, (err) => {
+        if (err) {
+          logger.error(err);
+        }
+      });
+    }
     res.status(201).json({ status: 'ok', message: 'User created' });
     return true;
   }).catch(next);
@@ -73,6 +87,18 @@ const forgotPassword = (req, res, next) => {
           next(err);
         } else {
           // TODO: send email
+          if (process.env.NODE_ENV === 'production') {
+            mailQueue.enqueueJob('forgot', {
+              from: process.env.MAIL_USERNAME,
+              to: user.email,
+              subject: 'You forgot your password',
+              html: '<pre_built_html_template_with_link>'
+            }, (_err) => {
+              if (_err) {
+                logger.error(_err);
+              }
+            });
+          }
           res.status(200).json({ status: 'ok', message: `${token} - Reset link sent to email` });
         }
       });
@@ -90,6 +116,18 @@ const resetPassword = (req, res, next) => {
           next(err);
         } else {
           // TODO: send email
+          if (process.env.NODE_ENV === 'production') {
+            mailQueue.enqueueJob('reset', {
+              from: process.env.MAIL_USERNAME,
+              to: user.email,
+              subject: 'Your password has been reset',
+              html: '<pre_built_html_template_with_password>'
+            }, (_err) => {
+              if (err) {
+                logger.error(_err);
+              }
+            });
+          }
           res.status(200).json({ status: 'ok', message: 'Password changed' });
         }
       });
