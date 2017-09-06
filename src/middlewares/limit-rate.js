@@ -19,7 +19,7 @@ const handleStoreError = (error) => {
 // Start slowing requests after 10 failed attempts to do something for the same user
 const singleBruteforce = new ExpressBrute(store, {
   freeRetries: 10,
-  minWait: 5 * 60 * 1000, // 5 minutes
+  minWait: 1 * 60 * 1000, // 1 minutes
   maxWait: 60 * 60 * 1000, // 1 hour,
   failCallback: ExpressBrute.FailForbidden,
   handleStoreError
@@ -27,7 +27,7 @@ const singleBruteforce = new ExpressBrute(store, {
 
 // No more than 10 requests per minute per IP, after that wait an hour
 const globalBruteforce = new ExpressBrute(store, {
-  freeRetries: 10,
+  freeRetries: 10000,
   attachResetToRequest: false,
   refreshTimeoutOnRequest: false,
   minWait: 60 * 60 * 1000, // 1 hour
