@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
+import uuid from 'uuid';
 import bcrypt from 'bcrypt';
+import randomstring from 'randomstring';
 
 mongoose.Promise = global.Promise;
 
@@ -21,9 +23,23 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  reset: {
+    token: {
+      type: String,
+      default: null
+    },
+    expires: {
+      type: Date,
+      default: null
+    }
+  },
   password: {
     type: String,
     required: true
+  },
+  changePassword: {
+    type: Boolean,
+    default: false
   },
   profile: {
     avatar: {
@@ -49,11 +65,22 @@ const userSchema = new mongoose.Schema({
  * Middeware hooks
  */
 userSchema.pre('save', function (next) { // eslint-disable-line func-names
-  if (!this.isModified('password')) return next();
-  return bcrypt.hash(this.password, 10).then((hash) => {
-    this.password = hash;
+  if (this.isModified('password') || this.isModified('reset')) {
+    if (this.isModified('password')) {
+      return bcrypt.hash(this.password, 10).then((hash) => {
+        this.password = hash;
+        return next();
+      }).catch(next);
+    }
+    if (this.isModified('reset') && this.reset.token) {
+      return bcrypt.hash(this.reset.token, 10).then((hash) => {
+        this.reset.token = hash;
+        return next();
+      }).catch(next);
+    }
     return next();
-  }).catch(next);
+  }
+  return next();
 });
 /**
  * Methods
@@ -62,10 +89,49 @@ userSchema.method({
   verifyPassword(password, callback) {
     bcrypt.compare(password, this.password, (err, isMatch) => {
       if (err) {
-        return callback(err);
+        callback(err);
+      } else {
+        callback(null, isMatch);
       }
-      return callback(null, isMatch);
     });
+  },
+  forgotPassword(callback) {
+    const today = new Date();
+    const expiration = new Date(today.getTime() + (10 * 60 * 1000));
+    const resetToken = uuid.v4();
+    this.reset.expires = expiration;
+    this.reset.token = resetToken;
+    this.markModified('reset');
+    this.save((err) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null, resetToken);
+      }
+    });
+  },
+  resetPassword(token, callback) {
+    const that = this;
+    if (new Date().getTime() > this.reset.expires.getTime()) {
+      callback(new Error('Token expired'));
+    } else {
+      bcrypt.compare(token, this.reset.token, (err, isMatch) => {
+        if (err) {
+          callback(err);
+        } else if (isMatch) {
+          const password = randomstring.generate(12);
+          that.password = password;
+          that.changePassword = true;
+          that.save((_err) => {
+            if (_err) {
+              callback(_err);
+            } else {
+              callback(null, password);
+            }
+          });
+        }
+      });
+    }
   }
 });
 /**
@@ -81,8 +147,8 @@ userSchema.statics = {
     return this.findOne({  // eslint-disable-line no-use-before-define
       _id
     })
-    .select({ password: 0 }) // always filter the password field
-    .exec();
+      .select({ password: 0 }) // always filter the password field
+      .exec();
   },
   /**
    * Get user
@@ -93,8 +159,8 @@ userSchema.statics = {
     return this.findOne({  // eslint-disable-line no-use-before-define
       email
     })
-    .select({ password: 0 }) // always filter the password field
-    .exec();
+      .select({ password: 0 }) // always filter the password field
+      .exec();
   },
 
   /**

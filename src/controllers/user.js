@@ -65,4 +65,45 @@ const updateUser = (req, res, next) => {
   }).catch(next);
 };
 
-export default { listUsers, createUser, getUser, updateUser };
+const forgotPasswd = (req, res, next) => {
+  User.findOne({ email: req.body.email }).exec().then((user) => {
+    if (user) {
+      user.forgotPasswd((err, token) => { // eslint-disable-line no-unused-vars
+        if (err) {
+          next(err);
+        } else {
+          // TODO: send email
+          res.status(200).json({ status: 'ok', message: 'Reset link sent to email' });
+        }
+      });
+    } else {
+      res.status(404).json({ status: 'error', error: { message: 'User not found' } });
+    }
+  });
+};
+
+const resetPasswd = (req, res, next) => {
+  User.findOne({ _id: req.params.id }).exec().then((user) => {
+    if (user) {
+      user.resetPassword(req.query.token, (err, passwd) => { // eslint-disable-line no-unused-vars
+        if (err) {
+          next(err);
+        } else {
+          // TODO: send email
+          res.status(200).json({ status: 'ok', message: 'Password changed' });
+        }
+      });
+    } else {
+      res.status(404).json({ status: 'error', error: { message: 'User not found' } });
+    }
+  });
+};
+
+export default {
+  listUsers,
+  createUser,
+  getUser,
+  updateUser,
+  forgotPasswd,
+  resetPasswd
+};

@@ -15,14 +15,6 @@ const refreshTokenSchema = new mongoose.Schema({
     ref: 'Client',
     required: true
   },
-  /*username: {
-    type: String,
-    required: true
-  },
-  clientId: {
-    type: String,
-    required: true
-  },*/
   token: {
     type: String,
     unique: true,

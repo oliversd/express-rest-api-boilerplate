@@ -14,4 +14,8 @@ router.get('/:id', validateRequest(findUser), userController.getUser);
 
 router.put('/:id', validateRequest(updateUser), userController.updateUser);
 
+router.post('/forgot', userController.forgotPasswd);
+
+router.get('/:id/reset', userController.resetPasswd);
+
 export default router;
