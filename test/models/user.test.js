@@ -4,7 +4,8 @@ import User from '../../src/models/user';
 import logger from '../../src/helpers/logger';
 
 const expect = chai.expect;
-const dbURI = 'mongodb://localhost/testApiDb';
+
+const dbURI = process.env.MONGO_URI || 'mongodb://localhost/testApiDb';
 
 mongoose.Promise = global.Promise;
 
@@ -63,9 +64,10 @@ describe('User spec for a model', () => {
       _user.verifyPassword(user.password, (err, verified) => {
         if (err) {
           done(err);
+        } else {
+          expect(verified).to.equal(true);
+          done();
         }
-        expect(verified).to.equal(true);
-        done();
       });
     }).catch(done);
   });

@@ -10,7 +10,8 @@ chai.should();
 
 const server = require('../../src/config/app');
 
-const dbURI = 'mongodb://localhost/testApiDb';
+const dbURI = process.env.MONGO_URI || 'mongodb://localhost/testApiDb';
+
 describe('User spec for a routes', () => {
   before(() => {
     // runs before all tests in this block
@@ -122,6 +123,61 @@ describe('User spec for a routes', () => {
           res.body.user.profile.should.have.property('firstName').equal('Asdio');
           res.body.user.profile.should.have.property('lastName').equal('Qwertson');
           res.body.user.should.have.property('verified');
+          done();
+        });
+    });
+  });
+
+  let resetToken = null;
+  describe('POST /api/users/forgot', () => {
+    it('it should GET a sent email message', (done) => {
+      chai.request(server)
+        .post('/api/users/forgot')
+        .send({ email: 'test@test.com' })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          resetToken = res.body.message.split(' ')[0];
+          res.body.message.split(' ')[2].should.be.equal('Reset');
+          done();
+        });
+    });
+    it('it should GET an user with reset token', (done) => {
+      chai.request(server)
+        .get(`/api/users/${_user._id}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('user');
+          res.body.user.reset.should.have.property('token').not.equal(null);
+          res.body.user.reset.should.have.property('expires').not.equal(null);
+          done();
+        });
+    });
+  });
+
+  describe('GET /api/users/:id/reset', () => {
+    it('it should GET "Password changed" message', (done) => {
+      chai.request(server)
+        .get(`/api/users/${_user._id}/reset?token=${resetToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').equal('Password changed');
+          done();
+        });
+    });
+    it('it should GET an user without reset token', (done) => {
+      chai.request(server)
+        .get(`/api/users/${_user._id}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('user');
+          res.body.user.should.have.property('changePassword').equal(true);
+          res.body.user.should.have.property('reset');
+          res.body.user.reset.should.have.property('token').equal(null);
+          res.body.user.reset.should.have.property('expires').equal(null);
           done();
         });
     });

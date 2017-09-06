@@ -15,7 +15,8 @@ const expect = chai.expect;
 
 const server = require('../../src/config/app');
 
-const dbURI = 'mongodb://localhost/testApiDb';
+const dbURI = process.env.MONGO_URI || 'mongodb://localhost/testApiDb';
+
 describe('Auth spec for a routes', () => {
   before(() => {
     // runs before all tests in this block

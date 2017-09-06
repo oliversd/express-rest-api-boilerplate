@@ -65,15 +65,15 @@ const updateUser = (req, res, next) => {
   }).catch(next);
 };
 
-const forgotPasswd = (req, res, next) => {
+const forgotPassword = (req, res, next) => {
   User.findOne({ email: req.body.email }).exec().then((user) => {
     if (user) {
-      user.forgotPasswd((err, token) => { // eslint-disable-line no-unused-vars
+      user.forgotPassword((err, token) => { // eslint-disable-line no-unused-vars
         if (err) {
           next(err);
         } else {
           // TODO: send email
-          res.status(200).json({ status: 'ok', message: 'Reset link sent to email' });
+          res.status(200).json({ status: 'ok', message: `${token} - Reset link sent to email` });
         }
       });
     } else {
@@ -82,7 +82,7 @@ const forgotPasswd = (req, res, next) => {
   });
 };
 
-const resetPasswd = (req, res, next) => {
+const resetPassword = (req, res, next) => {
   User.findOne({ _id: req.params.id }).exec().then((user) => {
     if (user) {
       user.resetPassword(req.query.token, (err, passwd) => { // eslint-disable-line no-unused-vars
@@ -104,6 +104,6 @@ export default {
   createUser,
   getUser,
   updateUser,
-  forgotPasswd,
-  resetPasswd
+  forgotPassword,
+  resetPassword
 };

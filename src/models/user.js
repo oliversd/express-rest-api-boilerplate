@@ -90,8 +90,17 @@ userSchema.method({
     bcrypt.compare(password, this.password, (err, isMatch) => {
       if (err) {
         callback(err);
+      } else if (isMatch) {
+        this.lastLogin = new Date();
+        this.save((_err) => {
+          if (_err) {
+            callback(_err);
+          } else {
+            callback(null, true);
+          }
+        });
       } else {
-        callback(null, isMatch);
+        callback(null, false);
       }
     });
   },
@@ -122,6 +131,8 @@ userSchema.method({
           const password = randomstring.generate(12);
           that.password = password;
           that.changePassword = true;
+          that.reset.expires = null;
+          that.reset.token = null;
           that.save((_err) => {
             if (_err) {
               callback(_err);
