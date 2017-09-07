@@ -50,13 +50,13 @@ const updateUser = (req, res, next) => {
   // The password can't be updated by this method for security reasons
   // the user must always ask for a reset email
   if (req.body.password) {
-    res.status(400).json({ status: 'error', error: { message: 'You can´t change the password with this endpoint' } });
+    res.status(400).json({ status: 'error', message: 'You can´t change the password with this endpoint' });
     return;
   } else if (req.body.email) {
-    res.status(400).json({ status: 'error', error: { message: 'You can´t change the email with this endpoint' } });
+    res.status(400).json({ status: 'error', message: 'You can´t change the email with this endpoint' });
     return;
   } else if (!req.body.firstName && !req.body.lastName) {
-    res.status(400).json({ status: 'error', error: { message: 'Wrong request, profile data required' } });
+    res.status(400).json({ status: 'error', message: 'Wrong request, profile data required' });
     return;
   }
   // Check if the user exist
@@ -103,7 +103,7 @@ const forgotPassword = (req, res, next) => {
         }
       });
     } else {
-      res.status(404).json({ status: 'error', error: { message: 'User not found' } });
+      res.status(404).json({ status: 'error', message: 'User not found' });
     }
   });
 };
@@ -132,7 +132,7 @@ const resetPassword = (req, res, next) => {
         }
       });
     } else {
-      res.status(404).json({ status: 'error', error: { message: 'User not found' } });
+      res.status(404).json({ status: 'error', message: 'User not found' });
     }
   });
 };
