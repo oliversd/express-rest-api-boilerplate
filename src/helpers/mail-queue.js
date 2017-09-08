@@ -11,22 +11,16 @@ const mailer = new Mailer({
   }
 });
 
-const sendForgotPassword = (params, callback) => {
-  mailer.sendMail(params).then(info => callback(null, info)).catch(callback);
-};
-
-const sendResetPassword = (params, callback) => {
-  mailer.sendMail(params).then(info => callback(null, info)).catch(callback);
-};
-
-const sendVerifyPassword = (params, callback) => {
+const sendEmail = (params, callback) => {
   mailer.sendMail(params).then(info => callback(null, info)).catch(callback);
 };
 
 const queue = new Queue(process.env.MONGO_URI, 'mail', {
-  forgot: sendForgotPassword,
-  reset: sendResetPassword,
-  verify: sendVerifyPassword
+  forgot: sendEmail,
+  reset: sendEmail,
+  verify: sendEmail,
+  verified: sendEmail,
+  welcome: sendEmail
 });
 
 /**

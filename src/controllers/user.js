@@ -1,5 +1,12 @@
 import User from '../models/user';
 import mailQueue from '../helpers/mail-queue';
+import {
+  welcomeEmailTemplate,
+  verifyEmailTemplate,
+  verifiedEmailTemplate,
+  forgotPasswordTemplate,
+  resetPasswordTemplate
+} from '../helpers/mail-template';
 import logger from '../helpers/logger';
 
 const getUser = (req, res, next) => {
@@ -30,11 +37,11 @@ const createUser = (req, res, next) => {
 
   user.save().then(() => {
     if (process.env.NODE_ENV === 'production') {
-      mailQueue.enqueueJob('verify', {
+      mailQueue.enqueueJob('welcome', {
         from: process.env.MAIL_USERNAME,
         to: user.email,
         subject: 'Wellcome to appName, please verify your email',
-        html: '<pre_built_html_template_with_link>'
+        html: welcomeEmailTemplate(user._id, user.verify.token)
       }, (err) => {
         if (err) {
           logger.error(err);
@@ -92,14 +99,19 @@ const forgotPassword = (req, res, next) => {
               from: process.env.MAIL_USERNAME,
               to: user.email,
               subject: 'You forgot your password',
-              html: '<pre_built_html_template_with_link>'
+              html: forgotPasswordTemplate(user._id, token)
             }, (_err) => {
               if (_err) {
                 logger.error(_err);
               }
             });
           }
-          res.status(200).json({ status: 'ok', message: `${token} - Reset link sent to email` });
+          res.status(200).json({
+            status: 'ok',
+            message: process.env.NODE_ENV === 'test' ?
+              `${token} - Reset link sent to email` :
+              'Reset link sent to email'
+          });
         }
       });
     } else {
@@ -121,7 +133,7 @@ const resetPassword = (req, res, next) => {
               from: process.env.MAIL_USERNAME,
               to: user.email,
               subject: 'Your password has been reset',
-              html: '<pre_built_html_template_with_password>'
+              html: resetPasswordTemplate(user.email, passwd)
             }, (_err) => {
               if (err) {
                 logger.error(_err);
@@ -137,11 +149,76 @@ const resetPassword = (req, res, next) => {
   });
 };
 
+const verifyEmail = (req, res, next) => {
+  User.findOne({ _id: req.params.id }).exec().then((user) => {
+    if (user) {
+      user.verifyEmail(req.query.token, (err, verified) => { // eslint-disable-line no-unused-vars
+        if (err) {
+          next(err);
+        } else {
+          // TODO: send email
+          if (process.env.NODE_ENV === 'production' && verified) {
+            mailQueue.enqueueJob('verified', {
+              from: process.env.MAIL_USERNAME,
+              to: user.email,
+              subject: 'Your password has been reset',
+              html: verifiedEmailTemplate()
+            }, (_err) => {
+              if (err) {
+                logger.error(_err);
+              }
+            });
+          }
+          res.status(200).json({ status: 'ok', message: verified ? 'Email verified' : 'Email not verified' });
+        }
+      });
+    } else {
+      res.status(404).json({ status: 'error', message: 'User not found' });
+    }
+  });
+};
+
+const askVerification = (req, res, next) => {
+  User.findOne({ _id: req.params.id }).exec().then((user) => {
+    if (user) {
+      user.askVerification((err, token) => { // eslint-disable-line no-unused-vars
+        if (err) {
+          next(err);
+        } else {
+          // TODO: send email
+          if (process.env.NODE_ENV === 'production') {
+            mailQueue.enqueueJob('verify', {
+              from: process.env.MAIL_USERNAME,
+              to: user.email,
+              subject: 'Your password has been reset',
+              html: verifyEmailTemplate(user.id, token)
+            }, (_err) => {
+              if (err) {
+                logger.error(_err);
+              }
+            });
+          }
+          res.status(200).json({
+            status: 'ok',
+            message: process.env.NODE_ENV === 'test' ?
+              `${token} - Verification email sent` :
+              'Verification email sent'
+          });
+        }
+      });
+    } else {
+      res.status(404).json({ status: 'error', message: 'User not found' });
+    }
+  });
+};
+
 export default {
   listUsers,
   createUser,
   getUser,
   updateUser,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  verifyEmail,
+  askVerification
 };

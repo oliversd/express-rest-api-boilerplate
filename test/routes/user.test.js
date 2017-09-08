@@ -123,7 +123,7 @@ describe('User spec for a routes', () => {
           res.body.user.should.have.property('email');
           res.body.user.should.have.property('lastLogin');
           res.body.user.should.have.property('profile');
-          res.body.user.should.have.property('verified');
+          res.body.user.should.have.property('verify');
           done();
         });
     });
@@ -155,7 +155,7 @@ describe('User spec for a routes', () => {
           res.body.user.should.have.property('lastLogin');
           res.body.user.profile.should.have.property('firstName').equal('Asdio');
           res.body.user.profile.should.have.property('lastName').equal('Qwertson');
-          res.body.user.should.have.property('verified');
+          res.body.user.should.have.property('verify');
           done();
         });
     });
