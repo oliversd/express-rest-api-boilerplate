@@ -9,7 +9,6 @@ const requireAuth = passport.authenticate('bearer', {
 
 router.get('/', requireAuth, clientController.listClients);
 router.post('/', requireAuth, clientController.createClient);
-
 router.get('/:id', requireAuth, clientController.getClient);
 
 export default router;

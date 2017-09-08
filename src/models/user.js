@@ -19,10 +19,6 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     trim: true
   },
-  verified: {
-    type: Boolean,
-    default: false
-  },
   reset: {
     token: {
       type: String,
@@ -33,9 +29,29 @@ const userSchema = new mongoose.Schema({
       default: null
     }
   },
+  verify: {
+    token: {
+      type: String,
+      default: uuid.v4()
+    },
+    from: {
+      type: Date,
+      default: new Date()
+    },
+    since: {
+      type: Date,
+      default: null
+    }
+  },
   password: {
     type: String,
     required: true
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: ['admin', 'user', 'guest'],
+    default: 'user'
   },
   changePassword: {
     type: Boolean,
@@ -143,6 +159,32 @@ userSchema.method({
         }
       });
     }
+  },
+  verifyEmail(token, callback) {
+    if (this.verify.token === token) {
+      this.verify.since = new Date();
+      this.save((_err) => {
+        if (_err) {
+          callback(_err);
+        } else {
+          callback(null, true);
+        }
+      });
+    }
+  },
+  askVerification(callback) {
+    const resetToken = uuid.v4();
+    this.verify.since = null;
+    this.verify.asked = new Date();
+    this.verify.token = resetToken;
+    this.markModified('verify');
+    this.save((_err) => {
+      if (_err) {
+        callback(_err);
+      } else {
+        callback(null, resetToken);
+      }
+    });
   }
 });
 /**

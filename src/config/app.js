@@ -35,13 +35,13 @@ app.use('/api', globalRateLimit, debugRoute, routes);
 
 app.use((req, res, next) => {
   debugApp('Route not found');
-  res.status(404).json({ status: 'error', error: 'Sorry endpoint not found!' });
+  res.status(404).json({ status: 'error', message: 'Sorry endpoint not found!' });
   next();
 });
 
 app.use((err, req, res, next) => {
   logger.error(err);
-  res.status(500).json({ status: 'error', error: err });
+  res.status(500).json({ status: 'error', message: err.message, error: err });
   next(err);
 });
 
