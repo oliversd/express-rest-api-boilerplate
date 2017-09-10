@@ -4,7 +4,7 @@ import * as oauth2 from '../authentication/oauth2-server';
 const router = express.Router(); // eslint-disable-line new-cap
 
 /**
- * @api {post} /api/auth/oauth/token user login
+ * @api {post} /api/auth/oauth user login
  * @apiVersion 0.0.1
  * @apiName oauthToken
  * @apiGroup auth

@@ -1,0 +1,11 @@
+NODE_ENV=development
+MONGO_URI_TEST=mongodb://localhost/testApiDb
+MONGO_URI=mongodb://localhost/ApiDb
+API_PORT=3000
+TOKEN_EXPIRATION_TIME=3600
+MAIL_FROM='admin@admin.com'
+MAIL_HOST=''
+MAIL_PORT=''
+MAIL_SECURE=null
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379

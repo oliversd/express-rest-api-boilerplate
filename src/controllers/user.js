@@ -38,7 +38,7 @@ const createUser = (req, res, next) => {
   user.save().then(() => {
     if (process.env.NODE_ENV === 'production') {
       mailQueue.enqueueJob('welcome', {
-        from: process.env.MAIL_USERNAME,
+        from: process.env.MAIL_FROM,
         to: user.email,
         subject: 'Wellcome to appName, please verify your email',
         html: welcomeEmailTemplate(user._id, user.verify.token)
@@ -96,7 +96,7 @@ const forgotPassword = (req, res, next) => {
           // TODO: send email
           if (process.env.NODE_ENV === 'production') {
             mailQueue.enqueueJob('forgot', {
-              from: process.env.MAIL_USERNAME,
+              from: process.env.MAIL_FROM,
               to: user.email,
               subject: 'You forgot your password',
               html: forgotPasswordTemplate(user._id, token)
@@ -130,7 +130,7 @@ const resetPassword = (req, res, next) => {
           // TODO: send email
           if (process.env.NODE_ENV === 'production') {
             mailQueue.enqueueJob('reset', {
-              from: process.env.MAIL_USERNAME,
+              from: process.env.MAIL_FROM,
               to: user.email,
               subject: 'Your password has been reset',
               html: resetPasswordTemplate(user.email, passwd)
@@ -159,7 +159,7 @@ const verifyEmail = (req, res, next) => {
           // TODO: send email
           if (process.env.NODE_ENV === 'production' && verified) {
             mailQueue.enqueueJob('verified', {
-              from: process.env.MAIL_USERNAME,
+              from: process.env.MAIL_FROM,
               to: user.email,
               subject: 'Your password has been reset',
               html: verifiedEmailTemplate()
@@ -188,7 +188,7 @@ const askVerification = (req, res, next) => {
           // TODO: send email
           if (process.env.NODE_ENV === 'production') {
             mailQueue.enqueueJob('verify', {
-              from: process.env.MAIL_USERNAME,
+              from: process.env.MAIL_FROM,
               to: user.email,
               subject: 'Your password has been reset',
               html: verifyEmailTemplate(user.id, token)
