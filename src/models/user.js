@@ -120,6 +120,24 @@ userSchema.method({
       }
     });
   },
+  changePassword(oldPassword, newPassword, callback) {
+    bcrypt.compare(oldPassword, this.password, (err, isMatch) => {
+      if (err) {
+        callback(err);
+      } else if (isMatch) {
+        this.password = newPassword;
+        this.save((_err) => {
+          if (_err) {
+            callback(_err);
+          } else {
+            callback(null, true);
+          }
+        });
+      } else {
+        callback(null, false);
+      }
+    });
+  },
   forgotPassword(callback) {
     const today = new Date();
     const expiration = new Date(today.getTime() + (10 * 60 * 1000));

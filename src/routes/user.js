@@ -19,6 +19,7 @@ router.get('/:id/verify', userController.verifyEmail);
 
 router.get('/:id', requireAuth, roleFilter('user'), validateRequest(findUser), userController.getUser);
 router.put('/:id', requireAuth, roleFilter('user'), validateRequest(updateUser), userController.updateUser);
+router.post('/:id/change', requireAuth, roleFilter('user'), userController.changePassword);
 router.post('/:id/verify', requireAuth, roleFilter('user'), userController.askVerification);
 
 router.get('/', requireAuth, roleFilter('user'), userController.listUsers);

@@ -62,7 +62,7 @@ const updateUser = (req, res, next) => {
   } else if (req.body.email) {
     res.status(400).json({ status: 'error', message: 'You can´t change the email with this endpoint' });
     return;
-  } else if (!req.body.firstName && !req.body.lastName) {
+  } else if (!req.body.firstName && !req.body.lastName && !req.body.avatar) {
     res.status(400).json({ status: 'error', message: 'Wrong request, profile data required' });
     return;
   }
@@ -149,6 +149,24 @@ const resetPassword = (req, res, next) => {
   });
 };
 
+const changePassword = (req, res, next) => {
+  User.findOne({ _id: req.params.id }).exec().then((user) => {
+    if (user) {
+      user.changePassword(req.body.old_password, (err, changed) => {
+        if (err) {
+          next(err);
+        } else if (changed) {
+          res.status(200).json({ status: 'ok', message: 'Password changed' });
+        } else {
+          res.status(400).json({ status: 'ok', message: 'Incorrect password' });
+        }
+      });
+    } else {
+      res.status(404).json({ status: 'error', message: 'User not found' });
+    }
+  });
+};
+
 const verifyEmail = (req, res, next) => {
   User.findOne({ _id: req.params.id }).exec().then((user) => {
     if (user) {
@@ -217,6 +235,7 @@ export default {
   createUser,
   getUser,
   updateUser,
+  changePassword,
   forgotPassword,
   resetPassword,
   verifyEmail,
