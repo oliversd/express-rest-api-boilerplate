@@ -26,7 +26,8 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'production' || process.en
       debugApp('No default user found');
       new User({
         email: 'admin@admin.com',
-        password: 'admin'
+        password: 'admin',
+        role: 'admin'
       }).save().then((_user) => {
         debugApp('Default user info');
         debugApp(`username: ${_user.email}`);
