@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema({
     enum: ['admin', 'user', 'guest'],
     default: 'user'
   },
-  changePassword: {
+  passwordChanged: {
     type: Boolean,
     default: false
   },
@@ -164,7 +164,7 @@ userSchema.method({
         } else if (isMatch) {
           const password = randomstring.generate(12);
           that.password = password;
-          that.changePassword = true;
+          that.passwordChanged = true;
           that.reset.expires = null;
           that.reset.token = null;
           that.save((_err) => {
