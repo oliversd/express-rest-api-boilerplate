@@ -1,10 +1,11 @@
 import ExpressBrute from 'express-brute';
 import RedisStore from 'express-brute-redis';
-import redis from '../helpers/redis';
+import redisClient from '../config/redis';
 
 let store = null;
 
 if (process.env.NODE_ENV === 'production') {
+  const redis = redisClient.getInstance();
   store = new RedisStore({
     client: redis
   });

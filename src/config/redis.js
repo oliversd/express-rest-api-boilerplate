@@ -75,4 +75,4 @@ class RedisClient {
 
 const redisClient = new RedisClient();
 
-export default redisClient.getInstance();
+export default redisClient;
