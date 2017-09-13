@@ -11,7 +11,6 @@ const requireAuth = passport.authenticate('bearer', {
   session: false
 });
 
-
 router.post('/', validateRequest(createUser), userController.createUser);
 router.post('/forgot', userController.forgotPassword);
 router.get('/:id/reset', userController.resetPassword);
